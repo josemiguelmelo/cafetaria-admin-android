@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <feup.cmov.cafeteriaadmin.buttons.ReadQRCodeButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/qr_code_button"
+                android:text="@string/qr_code"/>
+
+            <include layout="@layout/content_items_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/order_items_list"
+                />
+
+            <TextView
+                android:text="@string/total_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/order_total_price" />
+
+            <feup.cmov.cafeteriaadmin.buttons.ConfirmOrderButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/confirm_order"
+                android:text="@string/confirm_order"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

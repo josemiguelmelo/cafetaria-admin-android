@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Cafeteria</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_cardnumber">Card Number</string>
+    <string name="prompt_expmonth">Exp. Month</string>
+    <string name="prompt_expyear">Exp. Year</string>
+    <string name="prompt_cvc">CVC</string>
+    <string name="action_register">Register</string>
+    <string name="action_register_short">Register</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+    <string name="title_activity_items">ItemsActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_vouchers">Add Voucher</string>
+    <string name="title_activity_items_scroll">Menu</string>
+
+
+    <string name="cart">Cart</string>
+    <string name="items">Find items</string>
+    <string name="voucher">Voucher</string>
+    <string name="welcome_message">Welcome!</string>
+
+    <string name="qr_code">QR Code</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="total_price">Total price: </string>
+</resources>
