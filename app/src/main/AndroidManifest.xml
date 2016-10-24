@@ -16,19 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="feup.cmov.cafeteriaadmin.Signup"
-            android:label="@string/app_name">
+            android:name="feup.cmov.cafeteriaadmin.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name="feup.cmov.cafeteriaadmin.ShowPinActivity" />
-        <activity
-            android:name="feup.cmov.cafeteriaadmin.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name="feup.cmov.cafeteriaadmin.QRCodeScannerActivity"

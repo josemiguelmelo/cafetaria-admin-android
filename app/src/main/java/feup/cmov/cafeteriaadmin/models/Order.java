@@ -15,6 +15,8 @@ public class Order {
     private Cart cart;
     private float finalPrice;
 
+    private String uuid;
+
     public Order(Cart cart, ArrayList<Voucher> vouchers) {
         this.cart = cart;
         this.vouchers = vouchers;
@@ -30,6 +32,7 @@ public class Order {
     }
 
     public Cart getCart() { return this.cart; }
+    public ArrayList<Voucher> getVouchersApplied() { return this.vouchers; }
 
     public void applyVouchers(){
         for(Voucher voucher : this.vouchers)
@@ -46,7 +49,7 @@ public class Order {
         this.setFinalPrice(this.cart.totalPrice());
     }
 
-    public JSONObject postOrderJSON(String uuid)
+    public JSONObject postOrderJSON()
     {
         JSONObject postObject = new JSONObject();
 
@@ -54,7 +57,7 @@ public class Order {
         try {
             postObject.put("items", gson.toJson(this.cart.getListOfItemsIds()));
 
-            postObject.put("uuid", uuid);
+            postObject.put("uuid", this.uuid);
 
             ArrayList<String> vouchersCodes = new ArrayList<>();
             for(Voucher voucher : this.vouchers)
@@ -76,4 +79,18 @@ public class Order {
         return gson.toJson(this);
     }
 
+
+    public static Order parseFromJSON(String jsonObject)
+    {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonObject, Order.class);
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }

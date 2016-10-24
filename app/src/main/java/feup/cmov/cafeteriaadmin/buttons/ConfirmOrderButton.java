@@ -42,12 +42,8 @@ public class ConfirmOrderButton extends Button{
                     public void onClick(View v) {
                         EditText pinText = (EditText) pinDialog.findViewById(R.id.dialog_pin);
 
-                        if(activity.confirmPin(pinText.getText().toString())){
-                            placeOrder(activity.getHttp(), activity.getUUID(), order, fragment);
-                            Toast.makeText(activity, "Order placed successfully.", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(activity, "Pin not correct.", Toast.LENGTH_SHORT).show();
-                        }
+                        placeOrder(activity.getHttp(),  order, fragment);
+                        Toast.makeText(activity, "Order placed successfully.", Toast.LENGTH_SHORT).show();
 
                         pinDialog.dismiss();
                     }
@@ -58,7 +54,7 @@ public class ConfirmOrderButton extends Button{
         });
     }
 
-    public void placeOrder(Http http, String uuid, Order order, OrderFragment fragment){
+    public void placeOrder(Http http, Order order, OrderFragment fragment){
         RequestCb requestCb = new RequestCb() {
             @Override
             public void onResponse(JSONObject response) {
@@ -76,7 +72,7 @@ public class ConfirmOrderButton extends Button{
             }
         };
 
-        JSONObject postObject = order.postOrderJSON(uuid);
+        JSONObject postObject = order.postOrderJSON();
 
         http.post("/orders/store", postObject, requestCb);
     }

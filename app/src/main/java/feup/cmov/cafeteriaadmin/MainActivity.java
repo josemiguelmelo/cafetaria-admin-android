@@ -33,6 +33,7 @@ import feup.cmov.cafeteriaadmin.http.Http;
 import feup.cmov.cafeteriaadmin.http.RequestCb;
 import feup.cmov.cafeteriaadmin.models.Cart;
 import feup.cmov.cafeteriaadmin.models.Item;
+import feup.cmov.cafeteriaadmin.models.Order;
 import feup.cmov.cafeteriaadmin.models.voucher.DiscountVoucher;
 import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Voucher> vouchersList;
     private ArrayList<Voucher> vouchersApplied;
     private Cart cart;
+    private Order order;
 
     public boolean qrcodeRead = false;
     private boolean reloadFragment = false;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         this.initDrawerLayout();
     }
 
+
     @Override
     /** Open fragment with order details after reading QR Code*/
     public void onResume() {
@@ -92,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == Activity.RESULT_OK) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
+                String qrCodeOrderJson = intent.getStringExtra("SCAN_RESULT");
+
+                parseOrderFromQRCodeResult(qrCodeOrderJson);
 
                 this.qrcodeRead = true;
                 this.reloadFragment = true;
@@ -101,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
                 // Handle cancel
             }
         }
+    }
+
+
+    private void parseOrderFromQRCodeResult(String qrCodeResult){
+        this.order = Order.parseFromJSON(qrCodeResult);
+        this.cart = this.order.getCart();
+        this.vouchersApplied = this.order.getVouchersApplied();
+
+        Log.d("Order uuid", "#" + this.order.getUuid());
     }
 
     private void getItemsFromServer()
@@ -262,10 +275,6 @@ public class MainActivity extends AppCompatActivity {
         this.items = items;
     }
 
-    public String getUUID() {
-        SharedPreferences sharedPref = this.getSharedPreferences("cafeteria-android" ,Context.MODE_PRIVATE);
-        return sharedPref.getString("uuid", "");
-    }
     public Http getHttp() {
         return http;
     }
@@ -279,5 +288,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public ArrayList<Voucher> getVouchersApplied() {
         return this.vouchersApplied;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
