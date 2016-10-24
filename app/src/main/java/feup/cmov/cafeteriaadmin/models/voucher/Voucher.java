@@ -5,10 +5,15 @@ import feup.cmov.cafeteriaadmin.models.Order;
 
 public abstract class Voucher {
 
-    public String code;
-    public Voucher(String code)
+    public String signature;
+    public int type;
+    public int serialNumber;
+
+    public Voucher(String signature, int serialNumber, int type)
     {
-        this.code = code;
+        this.signature = signature;
+        this.type = type;
+        this.serialNumber = serialNumber;
     }
     public abstract void apply(Order cart);
 }

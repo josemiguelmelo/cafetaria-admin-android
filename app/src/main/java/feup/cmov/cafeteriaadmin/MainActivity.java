@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
         this.vouchersList = new ArrayList<>();
         this.vouchersApplied = new ArrayList<>();
 
-        this.vouchersList.add(new DiscountVoucher("20discount", 20));
+        this.vouchersList.add(new DiscountVoucher("20discount", 1234, 20));
 
-        this.getItemsFromServer();
+        this.fetchNeededContentFromServer();
 
         this.initFragmentsRegistry();
 
@@ -115,6 +115,13 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("Order uuid", "#" + this.order.getUuid());
     }
+
+    private void fetchNeededContentFromServer(){
+        this.getItemsFromServer();
+
+        // TODO : get available vouchers from server.
+    }
+
 
     private void getItemsFromServer()
     {

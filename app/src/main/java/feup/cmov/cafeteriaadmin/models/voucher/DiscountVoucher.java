@@ -5,10 +5,11 @@ import feup.cmov.cafeteriaadmin.models.Order;
 
 public class DiscountVoucher extends Voucher{
     private int discountPercentage;
+    public static int TYPE = 0;
 
-    public DiscountVoucher(String code, int discountPercentage)
+    public DiscountVoucher(String signature, int serialNumber, int discountPercentage)
     {
-        super(code);
+        super(signature, serialNumber, DiscountVoucher.TYPE);
         this.discountPercentage = discountPercentage;
     }
 

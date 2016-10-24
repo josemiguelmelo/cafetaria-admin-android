@@ -35,18 +35,33 @@ public class OrderFragment extends Fragment {
 
     private Cart cart;
     private Order order;
-    private ArrayList<Voucher> vouchers;
+    private ArrayList<Voucher> vouchersAppliedByUser;
+    private ArrayList<Voucher> validatedVouchers;
 
     private ReadQRCodeButton qrCodeButton;
+
+    private ArrayList<Voucher> validatedVouchers(){
+        validatedVouchers = new ArrayList<>();
+        ArrayList<Voucher> listOfVouchersAvailable = ((MainActivity) getActivity()).getVouchersList();
+
+        for(Voucher voucher : this.vouchersAppliedByUser)
+        {
+            if(listOfVouchersAvailable.contains(voucher))
+                validatedVouchers.add(voucher);
+        }
+        return validatedVouchers;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         this.cart = ((MainActivity) getActivity()).getCart();
 
-        this.vouchers = ((MainActivity) getActivity()).getVouchersApplied();
+        this.vouchersAppliedByUser = ((MainActivity) getActivity()).getVouchersApplied();
+        this.validatedVouchers = validatedVouchers();
 
-        order = new Order(this.cart, vouchers);
+        order = new Order(this.cart, this.validatedVouchers);
         order.applyVouchers();
 
         View v = inflater.inflate(R.layout.activity_order, container,false);

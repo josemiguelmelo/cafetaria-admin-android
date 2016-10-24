@@ -8,9 +8,11 @@ import feup.cmov.cafeteriaadmin.models.Order;
 public class ItemOfferVoucher extends Voucher{
     private Item item;
 
-    public ItemOfferVoucher(String code, Item item)
+    public static int TYPE = 1;
+
+    public ItemOfferVoucher(String signature, int serialNumber, Item item)
     {
-        super(code);
+        super(signature, serialNumber, ItemOfferVoucher.TYPE);
         this.item = item;
     }
 

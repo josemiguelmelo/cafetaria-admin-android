@@ -62,7 +62,7 @@ public class Order {
             ArrayList<String> vouchersCodes = new ArrayList<>();
             for(Voucher voucher : this.vouchers)
             {
-                vouchersCodes.add(voucher.code);
+                vouchersCodes.add(voucher.signature);
             }
             postObject.put("vouchers", gson.toJson(vouchersCodes));
 
