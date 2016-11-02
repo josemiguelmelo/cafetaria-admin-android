@@ -42,8 +42,8 @@ public class Cart {
         return totalPrice / 100;
     }
 
-    public ArrayList<Integer> getListOfItemsIds() {
-        ArrayList<Integer> idsList = new ArrayList<>();
+    public ArrayList<Long> getListOfItemsIds() {
+        ArrayList<Long> idsList = new ArrayList<>();
 
         for(Item item : cart)
         {

@@ -24,12 +24,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import feup.cmov.cafeteriaadmin.fragments.ItemsScrollFragment;
 import feup.cmov.cafeteriaadmin.fragments.OrderFragment;
 import feup.cmov.cafeteriaadmin.fragments.QRCodeFragment;
 import feup.cmov.cafeteriaadmin.fragments.VouchersFragment;
 import feup.cmov.cafeteriaadmin.http.Http;
+import feup.cmov.cafeteriaadmin.http.RESTApi;
 import feup.cmov.cafeteriaadmin.http.RequestCb;
 import feup.cmov.cafeteriaadmin.models.Cart;
 import feup.cmov.cafeteriaadmin.models.Item;
@@ -63,12 +65,13 @@ public class MainActivity extends AppCompatActivity {
         this.cart = new Cart();
         this.vouchersList = new ArrayList<>();
         this.vouchersApplied = new ArrayList<>();
-
+        this.http = new Http(this);
         this.vouchersList.add(new DiscountVoucher("20discount", 1234, 20));
-
-        this.fetchNeededContentFromServer();
+        this.items = new ArrayList<>();
 
         this.initFragmentsRegistry();
+
+        this.getAllNeededData();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,41 +119,26 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Order uuid", "#" + this.order.getUuid());
     }
 
-    private void fetchNeededContentFromServer(){
-        this.getItemsFromServer();
+    public void getAllNeededData() {
+        Log.d("INTERNET AVAILABLE" , "" + this.http.isInternetAvailable());
 
-        // TODO : get available vouchers from server.
-    }
+        if(this.http.isNetworkAvailable(this))
+        {
+            RESTApi restApi = new RESTApi(this);
+            restApi.getItems();
+            restApi.getVouchers();
+        }else{
+            Log.d("DB Items", "#false");
+            List<Item> itemsListFetchedFromDB = Item.listAll(Item.class);
+            this.items = new ArrayList<>(itemsListFetchedFromDB);
 
+            // TODO : get vouchers from DB
 
-    private void getItemsFromServer()
-    {
-        this.http = new Http(this);
-        this.items = new ArrayList<>();
+            Log.d("DB Items", "#" + this.items.size());
+            Log.d("DB Vouchers", "#" + this.vouchersList.size());
 
-        RequestCb requestCb = new RequestCb() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray items = response.getJSONArray("items");
-                     Log.d("NUMBER ITEMS" , "#" + items.length());
-                    for (int i = 0; i < items.length(); i++) {
-                        JSONObject jsonItem = items.getJSONObject(i);
-                        Item item = new Item();
-                        item.id = jsonItem.getInt("id");
-                        item.name = jsonItem.getString("name");
-                        item.price = jsonItem.getInt("price");
-                        MainActivity.this.items.add(item);
-                    }
-
-                    MainActivity.this.openFragment(ItemsScrollFragment.ITEMS_FRAGMENT);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        this.http.get("/items", requestCb);
+            this.openFragment(ItemsScrollFragment.ITEMS_FRAGMENT);
+        }
     }
 
     private void initFragmentsRegistry()
@@ -165,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentRegistry = new FragmentRegistry(getSupportFragmentManager(), registry);
     }
 
-    private void openFragment(String key)
+    public void openFragment(String key)
     {
         fragmentRegistry.openFragment(key);
     }

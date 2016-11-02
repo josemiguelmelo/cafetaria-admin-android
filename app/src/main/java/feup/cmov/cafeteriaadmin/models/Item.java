@@ -1,10 +1,12 @@
 package feup.cmov.cafeteriaadmin.models;
 
+import com.orm.SugarRecord;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Item {
-    public int id;
+public class Item extends SugarRecord{
+    public long id;
     public String name;
     public int price;
 

@@ -1,6 +1,7 @@
 package feup.cmov.cafeteriaadmin.http;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -16,7 +17,7 @@ import java.net.InetAddress;
 
 public class Http {
 
-    public static String server = "http://25c2e63e.ngrok.io";
+    public static String server = "https://6266947c.ngrok.io";
 
     private Context context;
 
@@ -61,5 +62,10 @@ public class Http {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }
