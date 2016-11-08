@@ -1,6 +1,8 @@
 package feup.cmov.cafeteriaadmin.models;
 
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -83,6 +85,7 @@ public class Order {
     public static Order parseFromJSON(String jsonObject)
     {
         Gson gson = new Gson();
+        Log.d("JSON Order" , jsonObject);
         return gson.fromJson(jsonObject, Order.class);
     }
 

@@ -7,7 +7,7 @@ public class DiscountVoucher extends Voucher{
     private int discountPercentage;
     public static int TYPE = 0;
 
-    public DiscountVoucher(String signature, int serialNumber, int discountPercentage)
+    public DiscountVoucher(String signature, String serialNumber, int discountPercentage)
     {
         super(signature, serialNumber, DiscountVoucher.TYPE);
         this.discountPercentage = discountPercentage;

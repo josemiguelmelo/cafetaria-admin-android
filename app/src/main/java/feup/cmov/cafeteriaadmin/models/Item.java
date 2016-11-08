@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Item extends SugarRecord{
-    public long id;
+    public Long itemId;
     public String name;
     public int price;
 

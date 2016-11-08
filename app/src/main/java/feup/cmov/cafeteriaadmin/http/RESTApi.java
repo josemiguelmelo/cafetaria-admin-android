@@ -38,7 +38,7 @@ public class RESTApi {
                         }
                         if(item == null)
                             item = new Item();
-                        item.id = jsonItem.getLong("id");
+                        item.itemId = jsonItem.getLong("id");
                         item.name = jsonItem.getString("name");
                         item.price = jsonItem.getInt("price");
 

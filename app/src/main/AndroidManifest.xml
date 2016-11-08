@@ -33,6 +33,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         
         <meta-data android:name="DATABASE" android:value="cafeteria_terminal.db" />
+        <meta-data android:name="VERSION" android:value="12" />
     </application>
 
 </manifest>

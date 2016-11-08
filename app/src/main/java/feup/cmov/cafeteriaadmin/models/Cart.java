@@ -47,7 +47,7 @@ public class Cart {
 
         for(Item item : cart)
         {
-            idsList.add(item.id);
+            idsList.add(item.itemId);
         }
 
         return idsList;

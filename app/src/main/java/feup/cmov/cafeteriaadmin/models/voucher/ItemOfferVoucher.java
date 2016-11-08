@@ -10,7 +10,7 @@ public class ItemOfferVoucher extends Voucher{
 
     public static int TYPE = 1;
 
-    public ItemOfferVoucher(String signature, int serialNumber, Item item)
+    public ItemOfferVoucher(String signature, String serialNumber, Item item)
     {
         super(signature, serialNumber, ItemOfferVoucher.TYPE);
         this.item = item;
