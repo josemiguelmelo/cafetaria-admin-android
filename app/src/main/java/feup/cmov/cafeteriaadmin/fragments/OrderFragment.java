@@ -61,8 +61,7 @@ public class OrderFragment extends Fragment {
         this.vouchersAppliedByUser = ((MainActivity) getActivity()).getVouchersApplied();
         this.validatedVouchers = validatedVouchers();
 
-        order = new Order(this.cart, this.validatedVouchers);
-        order.applyVouchers();
+        order = ((MainActivity)getActivity()).getOrder();
 
         View v = inflater.inflate(R.layout.activity_order, container,false);
 

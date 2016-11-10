@@ -17,12 +17,36 @@ import java.net.InetAddress;
 
 public class Http {
 
-    public static String server = "http://83ca2855.ngrok.io/";
+    public static String server = "http://83ca2855.ngrok.io";
 
     private Context context;
 
-    public Http(Context context) {
+    public boolean internetAvailable;
+
+    public Http(Context context, RequestCb callback) {
+        this.internetAvailable = false;
+
         this.context = context;
+
+        this.get("/vouchers", callback);
+    }
+
+    public Http(Context context) {
+        this.internetAvailable = false;
+
+        this.context = context;
+
+        this.get("/vouchers", new RequestCb() {
+            @Override
+            public void onResponse(JSONObject response) {
+                internetAvailable = true;
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                internetAvailable = false;
+            }
+        });
     }
 
     public void get(String url, final RequestCb requestCb) {
@@ -41,12 +65,15 @@ public class Http {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        Http.this.internetAvailable = true;
                         requestCb.onResponse(response);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Http.this.internetAvailable = false;
+                        requestCb.onError(error);
                         Log.w("HTTP ERROR", error.toString());
                     }
                 });

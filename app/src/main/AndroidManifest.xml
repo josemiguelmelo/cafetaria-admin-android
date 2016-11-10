@@ -33,7 +33,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         
         <meta-data android:name="DATABASE" android:value="cafeteria_terminal.db" />
-        <meta-data android:name="VERSION" android:value="12" />
+        <meta-data android:name="VERSION" android:value="14" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="feup.cmov" />
     </application>
 
 </manifest>

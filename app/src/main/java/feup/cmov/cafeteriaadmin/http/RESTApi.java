@@ -36,13 +36,17 @@ public class RESTApi {
 
                         Item item ;
                         try {
-                            item = Item.findById(Item.class, jsonItem.getInt("id"));
+                            item = Item.find(Item.class, "item_id = ?", "" + jsonItem.getLong("id") ).get(0);
                         } catch(Exception e)
                         {
                             item = null;
                         }
-                        if(item == null)
+
+                        if(item == null) {
+                            Log.d("ITEM NOT FOunD", "item was not found locally");
                             item = new Item();
+                        }
+
                         item.itemId = jsonItem.getLong("id");
                         item.name = jsonItem.getString("name");
                         item.price = jsonItem.getInt("price");
@@ -100,7 +104,7 @@ public class RESTApi {
 
                             voucher = new DiscountVoucher(signature, serialNumber, discount, uuid);
                         } else {
-                            int itemId = jsonItem.getInt("item_id");
+                            Long itemId = jsonItem.getLong("item_id");
 
                             if(ItemOfferVoucher.find(ItemOfferVoucher.class, "serial_number = ?", serialNumber).size() > 0)
                                 voucherExists = true;

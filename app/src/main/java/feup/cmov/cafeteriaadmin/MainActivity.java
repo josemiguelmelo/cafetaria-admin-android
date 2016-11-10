@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +39,7 @@ import feup.cmov.cafeteriaadmin.models.Cart;
 import feup.cmov.cafeteriaadmin.models.Item;
 import feup.cmov.cafeteriaadmin.models.Order;
 import feup.cmov.cafeteriaadmin.models.voucher.DiscountVoucher;
+import feup.cmov.cafeteriaadmin.models.voucher.ItemOfferVoucher;
 import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Voucher> vouchersApplied;
     private Cart cart;
     private Order order;
+    public RESTApi restApi;
 
     public boolean qrcodeRead = false;
     private boolean reloadFragment = false;
@@ -61,23 +65,48 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.http = new Http(this, new RequestCb() {
+            @Override
+            public void onResponse(JSONObject response) {
+                items = new ArrayList<>();
+                cart = new Cart();
+                vouchersList = new ArrayList<>();
+                vouchersApplied = new ArrayList<>();
+                restApi = new RESTApi(MainActivity.this);
 
-        this.cart = new Cart();
-        this.vouchersList = new ArrayList<>();
-        this.vouchersApplied = new ArrayList<>();
-        this.http = new Http(this);
-        this.items = new ArrayList<>();
+                MainActivity.this.initFragmentsRegistry();
 
-        this.initFragmentsRegistry();
+                MainActivity.this.getAllNeededData();
 
-        this.getAllNeededData();
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+                MainActivity.this.initNavigationView();
 
-        this.initNavigationView();
+                MainActivity.this.initDrawerLayout();
+            }
 
-        this.initDrawerLayout();
+            @Override
+            public void onError(VolleyError error) {
+                items = new ArrayList<>();
+                cart = new Cart();
+                vouchersList = new ArrayList<>();
+                vouchersApplied = new ArrayList<>();
+                restApi = new RESTApi(MainActivity.this);
+
+                MainActivity.this.initFragmentsRegistry();
+
+                MainActivity.this.getAllNeededData();
+
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
+                MainActivity.this.initNavigationView();
+
+                MainActivity.this.initDrawerLayout();
+            }
+
+        });
     }
 
 
@@ -111,7 +140,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void parseOrderFromQRCodeResult(String qrCodeResult){
-        this.order = Order.parseFromJSON(qrCodeResult);
+        try {
+            this.order = Order.parseFromJSON(qrCodeResult);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         this.cart = this.order.getCart();
         this.vouchersApplied = this.order.getVouchersApplied();
 
@@ -119,9 +153,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getAllNeededData() {
-        Log.d("INTERNET AVAILABLE" , "" + this.http.isInternetAvailable());
 
-        if(this.http.isNetworkAvailable(this))
+        if(this.http.internetAvailable)
         {
             RESTApi restApi = new RESTApi(this);
             restApi.getItems();
@@ -131,7 +164,12 @@ public class MainActivity extends AppCompatActivity {
             List<Item> itemsListFetchedFromDB = Item.listAll(Item.class);
             this.items = new ArrayList<>(itemsListFetchedFromDB);
 
-            // TODO : get vouchers from DB
+            List<ItemOfferVoucher> itemOfferVouchersListFetchedFromDB = ItemOfferVoucher.listAll(ItemOfferVoucher.class);
+            List<DiscountVoucher> discountVouchersListFetchedFromDB = DiscountVoucher.listAll(DiscountVoucher.class);
+
+            this.vouchersList = new ArrayList<>(itemOfferVouchersListFetchedFromDB);
+            this.vouchersList.addAll(discountVouchersListFetchedFromDB);
+
 
             Log.d("DB Items", "#" + this.items.size());
             Log.d("DB Vouchers", "#" + this.vouchersList.size());

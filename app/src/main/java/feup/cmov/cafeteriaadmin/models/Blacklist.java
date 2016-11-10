@@ -3,12 +3,13 @@ package feup.cmov.cafeteriaadmin.models;
 import com.orm.SugarRecord;
 
 public class Blacklist extends SugarRecord {
-    public String id;
-
-    public Blacklist(String id) {
-        this.id = id;
-    }
+    public String name;
 
     public Blacklist() {
     }
+
+    public Blacklist(String name) {
+        this.name = name;
+    }
+
 }

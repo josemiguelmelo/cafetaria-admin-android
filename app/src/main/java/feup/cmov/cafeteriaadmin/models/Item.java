@@ -10,6 +10,9 @@ public class Item extends SugarRecord{
     public String name;
     public int price;
 
+    public Item() {
+    }
+
     public String showPrice() {
         double decimal = price/100.0;
 
