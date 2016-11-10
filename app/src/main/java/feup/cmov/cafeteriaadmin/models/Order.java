@@ -4,18 +4,22 @@ package feup.cmov.cafeteriaadmin.models;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.orm.SugarRecord;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
-public class Order {
+public class Order extends SugarRecord {
     private ArrayList<Voucher> vouchers;
     private Cart cart;
     private float finalPrice;
+    public int cardExpirationMonth;
+    public int cardExpirationYear;
 
     private String uuid;
 
@@ -41,6 +45,21 @@ public class Order {
         {
             voucher.apply(this);
         }
+    }
+
+    public boolean validCcDate() {
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH)+1;
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        if(this.cardExpirationYear > currentYear) {
+            return true;
+        }
+
+        if(this.cardExpirationYear == currentYear && this.cardExpirationMonth >= currentMonth) {
+            return true;
+        }
+
+        return false;
     }
 
     /** Place order to server */

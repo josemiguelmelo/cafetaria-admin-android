@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +20,9 @@ import feup.cmov.cafeteriaadmin.fragments.OrderFragment;
 import feup.cmov.cafeteriaadmin.fragments.QRCodeFragment;
 import feup.cmov.cafeteriaadmin.http.Http;
 import feup.cmov.cafeteriaadmin.http.RequestCb;
+import feup.cmov.cafeteriaadmin.models.Blacklist;
 import feup.cmov.cafeteriaadmin.models.Order;
+import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
 public class ConfirmOrderButton extends Button{
 
@@ -55,6 +59,7 @@ public class ConfirmOrderButton extends Button{
     }
 
     public void placeOrder(Http http, Order order, OrderFragment fragment){
+
         RequestCb requestCb = new RequestCb() {
             @Override
             public void onResponse(JSONObject response) {
@@ -62,13 +67,33 @@ public class ConfirmOrderButton extends Button{
                 try {
                     error = response.getString("error");
                     vouchers = response.getString("vouchers");
-
-                    // TODO: parse vouchers received from server and add it to app available vouchers
-                    // TODO: remove used vouchers on order
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+                if(Blacklist.find(Blacklist.class, "id = ?", order.getUuid()).size() > 0) {
+                    return;
+                }
+
+                for(Voucher voucher : order.getVouchersApplied()) {
+                    // if the voucher is invalid
+                    if(! Voucher.find(Voucher.class, "id = ?", voucher.getId().toString()).get(0).uuid.equals(order.getUuid())) {
+                        Blacklist blacklist = new Blacklist(order.getUuid());
+                        blacklist.save();
+                        return;
+                    }
+                }
+                if(! order.validCcDate()) {
+                    Blacklist blacklist = new Blacklist(order.getUuid());
+                    blacklist.save();
+                    return;
+                }
+
+                order.save();
             }
         };
 

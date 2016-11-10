@@ -3,6 +3,8 @@ package feup.cmov.cafeteriaadmin.http;
 
 import android.util.Log;
 
+import com.android.volley.VolleyError;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +57,11 @@ public class RESTApi {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
         };
 
         Log.d("Get Items", "GET SENT");
@@ -82,6 +89,7 @@ public class RESTApi {
 
                         String serialNumber = jsonItem.getString("serial_number");
                         String signature = jsonItem.getString("signature");
+                        String uuid = jsonItem.getString("uuid");
 
                         boolean voucherExists = false;
                         if(type.equals("discount")) {
@@ -90,14 +98,14 @@ public class RESTApi {
                             if(DiscountVoucher.find(DiscountVoucher.class, "serial_number = ?", serialNumber).size() > 0)
                                 voucherExists = true;
 
-                            voucher = new DiscountVoucher(signature, serialNumber, discount);
+                            voucher = new DiscountVoucher(signature, serialNumber, discount, uuid);
                         } else {
                             int itemId = jsonItem.getInt("item_id");
 
                             if(ItemOfferVoucher.find(ItemOfferVoucher.class, "serial_number = ?", serialNumber).size() > 0)
                                 voucherExists = true;
 
-                            voucher = new ItemOfferVoucher(signature, serialNumber, itemId);
+                            voucher = new ItemOfferVoucher(signature, serialNumber, itemId, uuid);
                         }
 
                         activity.getVouchersList().add(voucher);
@@ -112,6 +120,11 @@ public class RESTApi {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
             }
         };
 

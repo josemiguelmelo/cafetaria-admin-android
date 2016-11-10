@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         this.vouchersList = new ArrayList<>();
         this.vouchersApplied = new ArrayList<>();
         this.http = new Http(this);
-        this.vouchersList.add(new DiscountVoucher("20discount", Integer.toString(1234), 20));
         this.items = new ArrayList<>();
 
         this.initFragmentsRegistry();
