@@ -1,9 +1,11 @@
 package feup.cmov.cafeteriaadmin.models.voucher;
 
 
+import com.orm.SugarRecord;
+
 import feup.cmov.cafeteriaadmin.models.Order;
 
-public abstract class Voucher {
+public abstract class Voucher extends SugarRecord{
 
     public String signature;
     public int type;

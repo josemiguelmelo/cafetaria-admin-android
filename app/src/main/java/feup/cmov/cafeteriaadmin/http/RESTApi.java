@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import feup.cmov.cafeteriaadmin.MainActivity;
 import feup.cmov.cafeteriaadmin.fragments.ItemsScrollFragment;
 import feup.cmov.cafeteriaadmin.models.Item;
+import feup.cmov.cafeteriaadmin.models.voucher.DiscountVoucher;
+import feup.cmov.cafeteriaadmin.models.voucher.ItemOfferVoucher;
+import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
 public class RESTApi {
 
@@ -61,6 +64,59 @@ public class RESTApi {
 
     public void getVouchers()
     {
-        // TODO : get available vouchers to user from server and save to local db
+        RequestCb requestCb = new RequestCb() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    activity.getVouchersList().clear();
+
+
+                    JSONArray vouchers = response.getJSONArray("vouchers");
+                    Log.d("D/Number vouchers" , "#" + vouchers.length());
+                    for (int i = 0; i < vouchers.length(); i++) {
+                        JSONObject jsonItem = vouchers.getJSONObject(i);
+
+                        String type = jsonItem.getString("type");
+
+                        Voucher voucher;
+
+                        String serialNumber = jsonItem.getString("serial_number");
+                        String signature = jsonItem.getString("signature");
+
+                        boolean voucherExists = false;
+                        if(type.equals("discount")) {
+                            int discount = jsonItem.getInt("discount");
+
+                            if(DiscountVoucher.find(DiscountVoucher.class, "serial_number = ?", serialNumber).size() > 0)
+                                voucherExists = true;
+
+                            voucher = new DiscountVoucher(signature, serialNumber, discount);
+                        } else {
+                            int itemId = jsonItem.getInt("item_id");
+
+                            if(ItemOfferVoucher.find(ItemOfferVoucher.class, "serial_number = ?", serialNumber).size() > 0)
+                                voucherExists = true;
+
+                            voucher = new ItemOfferVoucher(signature, serialNumber, itemId);
+                        }
+
+                        activity.getVouchersList().add(voucher);
+
+                        if(voucherExists)
+                            continue;
+
+                        voucher.save();
+                    }
+
+                    activity.openFragment(ItemsScrollFragment.ITEMS_FRAGMENT);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Log.d("Get Vouchers", "Request sent");
+
+        activity.getHttp().get("/vouchers", requestCb);
     }
 }

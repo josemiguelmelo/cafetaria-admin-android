@@ -6,46 +6,47 @@ import feup.cmov.cafeteriaadmin.models.Item;
 import feup.cmov.cafeteriaadmin.models.Order;
 
 public class ItemOfferVoucher extends Voucher{
-    private Item item;
+    private int item;
 
     public static int TYPE = 1;
 
-    public ItemOfferVoucher(String signature, String serialNumber, Item item)
+    public ItemOfferVoucher(String signature, String serialNumber, int item)
     {
         super(signature, serialNumber, ItemOfferVoucher.TYPE);
         this.item = item;
     }
 
-    public Item getItem() {
+    public int getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(int item) {
         this.item = item;
     }
 
     @Override
     public void apply(Order order) {
         Cart cart = order.getCart();
-        int numVoucherItemsInCart = 0;
+        int price = 0;
 
         for(Item item : cart.getCartList())
         {
-            if(item.equals(this.item))
+            if(item.itemId.equals(this.item))
             {
-                numVoucherItemsInCart++;
+                price = item.price;
             }
         }
 
-        float discountInPrice = numVoucherItemsInCart * this.item.price;
         float orderPrice = order.totalPrice();
 
-        order.setFinalPrice(orderPrice - discountInPrice);
+        order.setFinalPrice(orderPrice - price);
     }
 
 
     @Override
     public String toString(){
-        return "Product " + this.item.name + " for free.";
+
+        Item itemObj = Item.find(Item.class, "item_id = ?", Integer.toString(this.item)).get(0);
+        return "Product " + itemObj.name + " for free.";
     }
 }
