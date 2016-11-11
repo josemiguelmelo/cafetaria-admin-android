@@ -23,7 +23,7 @@ import feup.cmov.cafeteriaadmin.models.Order;
 import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
 public class OrderFragment extends Fragment {
-    public static String ORDER_FRAGMENT = "order_fragment";
+    public static String ORDER_FRAGMENT = "Place Order";
 
     private ConfirmOrderButton confirmOrderButton;
 

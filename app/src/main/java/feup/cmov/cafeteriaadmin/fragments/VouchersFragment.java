@@ -19,7 +19,7 @@ import feup.cmov.cafeteriaadmin.adapters.VoucherAdapter;
 import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
 public class VouchersFragment extends Fragment {
-    public static String VOUCHER_FRAGMENT = "voucher_fragment";
+    public static String VOUCHER_FRAGMENT = "Vouchers";
 
 
     private RecyclerView mRecyclerView;

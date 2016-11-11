@@ -19,7 +19,7 @@ import feup.cmov.cafeteriaadmin.models.Cart;
 import feup.cmov.cafeteriaadmin.models.Item;
 
 public class ItemsScrollFragment extends Fragment {
-    public static String ITEMS_FRAGMENT = "items_fragment";
+    public static String ITEMS_FRAGMENT = "All items";
 
     private RecyclerView mRecyclerView;
     private ItemAdapter mAdapter;

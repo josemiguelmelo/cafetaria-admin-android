@@ -23,7 +23,7 @@ import feup.cmov.cafeteriaadmin.models.Order;
 import feup.cmov.cafeteriaadmin.models.voucher.Voucher;
 
 public class QRCodeFragment extends Fragment{
-    public static String QRCODE_FRAGMENT = "qrcode_fragment";
+    public static String QRCODE_FRAGMENT = "Read QR Code";
 
     private ReadQRCodeButton qrCodeButton;
 

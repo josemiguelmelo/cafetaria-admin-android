@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean qrcodeRead = false;
     private boolean reloadFragment = false;
 
+    public static String APP_TITLE = "Cafeteria Terminal";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openFragment(String key)
     {
+        setTitle(APP_TITLE + " - " + key);
         fragmentRegistry.openFragment(key);
     }
 
