@@ -122,7 +122,7 @@ public class ConfirmOrderButton extends Button{
                 String vouchersString = "";
                 for(Voucher voucher : order.getVouchersApplied())
                 {
-                    vouchersString += voucher.signature + ",";
+                    vouchersString += voucher.serialNumber + ",";
                 }
                 String itemsString = "";
                 for(Item item : order.getCart().getCartList())

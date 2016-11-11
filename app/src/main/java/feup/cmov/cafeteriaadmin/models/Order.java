@@ -90,7 +90,7 @@ public class Order  {
             ArrayList<String> vouchersCodes = new ArrayList<>();
             for(Voucher voucher : this.vouchers)
             {
-                vouchersCodes.add(voucher.signature);
+                vouchersCodes.add(voucher.serialNumber);
             }
             postObject.put("vouchers", gson.toJson(vouchersCodes));
 
@@ -138,7 +138,7 @@ public class Order  {
                 voucher = new ItemOfferVoucher(signature, serialNumber, voucherObject.getLong("item"), "");
             }
             else {
-                voucher = new DiscountVoucher(signature, serialNumber, voucherObject.getInt("discount"), "");
+                voucher = new DiscountVoucher(signature, serialNumber, voucherObject.getInt("discountPercentage"), "");
             }
             vouchers.add(voucher);
         }

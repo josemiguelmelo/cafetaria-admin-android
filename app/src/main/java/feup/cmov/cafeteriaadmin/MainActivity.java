@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void parseOrderFromQRCodeResult(String qrCodeResult){
         try {
+            Log.d("QRCODE Result", qrCodeResult);
             this.order = Order.parseFromJSON(qrCodeResult);
         }catch (Exception e)
         {

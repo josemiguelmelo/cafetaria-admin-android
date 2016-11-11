@@ -1,6 +1,8 @@
 package feup.cmov.cafeteriaadmin.models;
 
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.orm.SugarRecord;
 
@@ -40,7 +42,18 @@ public class PendingOrder extends SugarRecord{
 
             String vouchersString = "[]";
             if(vouchers.length() > 0)
-                vouchersString = "[" + vouchers.substring(0, vouchers.length()-1) + "]";
+            {
+                String[] vouchersStringArray = vouchers.substring(0, vouchers.length()-1).split(",");
+                vouchersString = "[";
+                for (int j = 0; j < vouchersStringArray.length; j++)
+                {
+                    if(j > 0)
+                        vouchersString += ",";
+
+                    vouchersString += "\"" + vouchersStringArray[j] + "\"";
+                }
+                vouchersString += "]";
+            }
 
 
             postObject.put("items", cartString);
@@ -50,6 +63,8 @@ public class PendingOrder extends SugarRecord{
             postObject.put("vouchers", vouchersString);
 
             postObject.put("total_price", this.finalPrice);
+
+            Log.d("Vouchers Array", vouchersString);
         } catch (JSONException e) {
             e.printStackTrace();
         }

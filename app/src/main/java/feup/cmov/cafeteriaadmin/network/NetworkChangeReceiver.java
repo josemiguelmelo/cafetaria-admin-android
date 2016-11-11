@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -30,7 +31,6 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             @Override
             public void onResponse(JSONObject response) {
                 List<PendingOrder> pendingOrderList = PendingOrder.listAll(PendingOrder.class);
-
                 Log.d("Pending orders", "# " + pendingOrderList.size());
                 for(int i = 0; i < pendingOrderList.size() ; i++)
                 {
