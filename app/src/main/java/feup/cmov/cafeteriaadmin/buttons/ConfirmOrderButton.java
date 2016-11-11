@@ -130,7 +130,7 @@ public class ConfirmOrderButton extends Button{
                     itemsString += item.itemId + ",";
                 }
 
-                PendingOrder pendingOrder = new PendingOrder(vouchersString, itemsString, order.totalPrice(), order.getUuid());
+                PendingOrder pendingOrder = new PendingOrder(vouchersString, itemsString, order.totalPrice() * 100, order.getUuid());
                 pendingOrder.save();
             }
         };

@@ -17,7 +17,7 @@ import java.net.InetAddress;
 
 public class Http {
 
-    public static String server = "http://83ca2855.ngrok.io";
+    public static String server = "http://f7ea5888.ngrok.io";
 
     private Context context;
 
